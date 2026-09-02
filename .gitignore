@@ -1,0 +1,12 @@
+venv/
+env/
+myenv/
+# Django files
+db.sqlite3
+*.log
+# Python cache
+__pycache__/
+*.pyc# IDEs and OS files
+.vscode/
+.idea/.DS_Store 
+.env
