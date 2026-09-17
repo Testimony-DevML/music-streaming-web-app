@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title%}Reset Done{% endblock %}
+{% block content %}
+<div class="container-fluid p-3 hero-sec">
+    <div class="row text-center">
+        <div class="col-lg-6 col-md-9 col-12 mx-auto">
+            <div class="container px-5 py-4 text-center layout">
+
+                <h1>Welcome</h1>
+                <p class="lead">Paaword successfully rest.</p>
+
+                <button type="" class="login-btn mt-4">
+                        <a href="{% url 'accounts:login' %}"></a>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

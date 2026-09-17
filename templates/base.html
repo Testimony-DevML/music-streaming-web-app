@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title%} {%endblock%}</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'custom_css/styles.css' %}">
+</head>
+
+<body>
+    {% if user.is_authenticated%}
+    {% include 'nav.html'%}
+    <div class="head">
+        <h1 class="brand">Música</h1>
+    </div>
+    {% endif %}
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mt-3" role="alert">
+        {{ message }}
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if form.errors %}
+    <div class="text-danger alert">
+        {{ form.errors }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+    {% endif %}
+
+    <main>
+        {%block content%}
+        {%endblock%}
+    </main>
+
+    {% if user.is_authenticated %}
+    <audio id="audio_player"></audio>
+    <div class="container-fluid px-3 px-md-4 px-lg-5 py-3 global-audio d-flex justify-content-between align-items-center">
+        <p id="info">Nothing is playing</p>
+        <div class="d-flex gap-2 align-items-center">
+            <button id="play-btn" class="btn btn-dark"><i class="bi bi-play-fill"></i></button>
+            <span id="current_time">0:00</span><input type="range" min="0" max="100" value="0" id="progress_bar"><span
+                id="duration">0:00</span>
+        </div>
+        <div class="d-flex gap-2 align-items-center"><i class="bi bi-volume-up-fill"></i><input type="range" min="0" max="1" step="0.01" id="volume_control"></div>
+    </div>
+    {% endif %}
+
+
+    <script>
+        const audio_player = document.getElementById('audio_player');
+        const play_btn = document.getElementById('play-btn');
+
+        const duration = document.getElementById('duration')
+        const current_time = document.getElementById('current_time')
+        const progress_bar = document.getElementById('progress_bar')
+
+        const volume_control = document.getElementById('volume_control')
+
+        const info = document.getElementById('info')
+
+        function updatePlayButton() {
+            track_play_buttons.forEach(function (button) {
+                button.innerHTML = '<i class="bi bi-play-fill"></i>';
+            });
+
+            if (audio_player.paused) {
+                play_btn.innerHTML = '<i class="bi bi-play-fill"></i>'
+
+                if (current_track_button) {
+                    current_track_button.innerHTML = '<i class="bi bi-play-fill"></i>'
+                }
+
+            } else {
+                play_btn.innerHTML = '<i class="bi bi-pause-fill"></i>'
+
+                if (current_track_button) {
+                    current_track_button.innerHTML = '<i class="bi bi-pause-fill"></i>'
+                }
+            }
+        }
+
+        function togglePlayBack() {
+            if (audio_player.paused) {
+                audio_player.play()
+            } else {
+                audio_player.pause()
+            }
+
+            updatePlayButton()
+        }
+
+        play_btn.addEventListener('click', togglePlayBack)
+
+        function timeFormatter(seconds) {
+            const minutes = Math.floor(seconds / 60)
+            const remaining_time = Math.floor(seconds % 60)
+
+            return `${minutes}:${remaining_time.toString().padStart(2, '0')}`
+        }
+
+        audio_player.addEventListener('loadedmetadata', function () {
+            duration.textContent = timeFormatter(audio_player.duration)
+        })
+
+        audio_player.addEventListener('timeupdate', function () {
+            current_time.textContent = timeFormatter(audio_player.currentTime)
+
+            const progress = (audio_player.currentTime / audio_player.duration) * 100
+            progress_bar.value = progress
+        })
+
+        progress_bar.addEventListener('input', function () {
+            const new_time = (progress_bar.value / 100) * audio_player.duration
+            audio_player.currentTime = new_time
+        })
+
+        volume_control.addEventListener('input', function () {
+            audio_player.volume = volume_control.value
+        })
+
+        let current_audio_url = null;
+        function loadTrack(audio_url, title) {
+            if (!audio_url) {
+                info.textContent = 'Track unavailable'
+                return
+            }
+            current_audio_url = audio_url
+            audio_player.src = audio_url
+            audio_player.load()
+            info.textContent = title
+
+            audio_player.play()
+            updatePlayButton()
+        }
+
+        audio_player.addEventListener('error', function () {
+            info.textContent = 'Audio unavailable'
+            play_btn.innerHTML = '<i class="bi bi-play-fill"></i>'
+            progress_bar.value = 0
+            current_time.textContent = '0:00'
+        })
+
+        audio_player.addEventListener('play', updatePlayButton);
+        audio_player.addEventListener('pause', updatePlayButton);
+
+        audio_player.addEventListener('ended', function () {
+            updatePlayButton()
+            progress_bar.value = 0
+            current_time.textContent = '0:00'
+            audio_player.currentTime = 0
+        })
+
+        const track_play_buttons = document.querySelectorAll('.track-play-btn')
+        let current_track_button = null;
+
+        track_play_buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                const audio_file = button.dataset.audio
+                const title = button.dataset.title
+
+                current_track_button = button
+
+                if (current_audio_url === audio_file) {
+                    togglePlayBack()
+                } else {
+                    loadTrack(audio_file, title)
+                }
+            })
+        })
+
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

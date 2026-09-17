@@ -1,0 +1,322 @@
+body{
+    background-color: rgba(11, 2, 27);
+}
+
+.hero-sec {
+    background-image: linear-gradient(135deg,
+            rgba(2, 8, 23, 0.90),
+            rgba(15, 23, 42, 0.72),
+            rgba(49, 46, 129, 0.58)), url('../images/login_img.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+}
+
+.hero-sec::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 35%,
+            rgba(0, 0, 0, 0.4) 100%
+        );
+    pointer-events: none;
+}
+
+.layout {
+    margin-top: 15%;
+    min-height: 60vh;
+    border-radius: 20px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.11),
+        rgba(124, 58, 237, 0.10)
+    );
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(167, 139, 250, 0.30);
+    border-radius: 22px;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.35),
+        0 0 35px rgba(124, 58, 237, 0.08);
+    color: wheat;
+}
+
+.layout form input {
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    color: white;
+}
+
+.layout form input:focus {
+     background: rgba(255, 255, 255, 0.11);
+    border-color: rgba(196, 181, 253, 0.75);
+
+    box-shadow:
+        0 0 0 3px rgba(139, 92, 246, 0.12);
+
+    outline: none;
+}
+
+.layout form input::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.form-group{
+    margin-top: 4%;
+}
+
+.sign-up-p{
+    color: rgba(255, 255, 255, 0.72);
+}
+
+span a{
+    color: #c4b5fd;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+span a:hover {
+    color: #b388ff;
+    text-shadow: 0 0 8px rgba(179, 136, 255, 0.45);
+}
+
+.login-btn {
+    width: 50%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+
+    background: linear-gradient(
+        90deg,
+        #7c3aed,
+        #a855f7
+    );
+
+    color: white;
+    font-weight: 600;
+
+    transition: 0.3s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(168, 85, 247, 0.35);
+}
+
+.music_genre_list{
+    background-color: rgba(11, 2, 27);
+    min-height: 100vh;
+    padding: 4% 10%;
+}
+
+.global-audio{
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 -5px 25px rgba(51, 6, 36, 0.25);
+    background-color: rgba(11, 2, 27);
+
+    left: 0;
+    width: 100%;
+    min-height: 85px;
+}
+
+.global-audio #info {
+    width: 25%;
+    margin: 0;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.global-audio audio {
+    width: 50%;
+    max-width: 600px;
+}
+
+.card{
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 3%;
+    background-color: transparent;
+}
+
+.card-main{
+    margin-top: 5%;
+    box-shadow: 10px -5px 25px rgba(51, 6, 36, 0.25);
+}
+
+.nav-bar{
+    top: 14%;
+    left: 0;
+    position: fixed;
+    width: 20%;
+}
+
+.nav-bar i{
+    color: white;
+}
+
+.nav-bar .btn{
+    background-color: rgba(100, 100, 100, 0.4);
+    color: #c4b5fd;
+}
+
+.head h1{
+    color: white;
+    padding: 1% 2%;
+    position: fixed;
+}
+
+.category-links{
+    position: fixed;
+}
+
+.active_category{
+    color: #a9a4b3;
+    position: relative;
+    transition: color 0.25s ease;
+}
+
+.active_category::after{
+    content: "";
+    position: absolute;
+
+    left: 50%;
+    bottom: -6px;
+
+    width: 18px;
+    height: 3px;
+
+    transform: translateX(-50%);
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #7c4dff,
+        #d946ef
+    );
+}
+
+.track-card{
+    height: 100px;
+     width: 100%;
+    overflow: hidden;
+}
+
+.track-cover {
+    width: 100%;
+    height: 90px;
+    object-fit: cover;
+}
+
+.card-text, .card-title{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+main {
+    padding-bottom: 110px;
+}
+
+
+
+
+
+
+
+@media (max-width: 991.98px) {
+
+    .global-audio {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+
+    .global-audio #info {
+        width: 30%;
+    }
+
+    .global-audio audio {
+        width: 65%;
+    }
+}
+
+
+@media (max-width: 575.98px) {
+
+    .track-card {
+        margin-top: 0.75rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    .track-cover {
+        height: 80px;
+    }
+
+    .track-card .card-body {
+        padding: 0.75rem;
+    }
+
+    .track-card .card-title {
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+    }
+
+    .track-card .card-text {
+        font-size: 0.8rem;
+        margin-bottom: 0;
+    }
+
+    .track-play-btn {
+        width: 38px;
+        height: 38px;
+        padding: 0;
+    }
+
+     main {
+        padding-top: 50px;
+        padding-bottom: 135px;
+    }
+
+     .global-audio {
+        min-height: 110px;
+
+        padding: 12px 15px !important;
+
+        flex-direction: column;
+        justify-content: center !important;
+        align-items: stretch !important;
+
+        gap: 8px;
+    }
+
+    .global-audio #info {
+        width: 100%;
+
+        margin: 0;
+
+        font-size: 0.85rem;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .global-audio audio {
+        display: block;
+
+        width: 100%;
+        max-width: 100%;
+
+        height: 45px;
+    }
+
+}

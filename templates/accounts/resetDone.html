@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title%}Password Reset{% endblock %}
+{% block content %}
+<div class="container-fluid p-3 hero-sec">
+    <div class="row text-center">
+        <div class="col-lg-6 col-md-9 col-12 mx-auto">
+            <div class="container px-5 py-4 text-center layout">
+
+                <h1>Welcome</h1>
+                <p class="lead">Reset your password</p>
+
+                <p class="lead mt-5 sign-up-p">If an account exists with that email, password reset instructions have been sent.</p>
+
+                <p class="mt-5 sign-up-p">Didn't receive an email? <a href="{% url 'accounts:reset_password' %}">Click here</a></p>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

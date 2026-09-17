@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title%}Login{% endblock %}
+{% block content %}
+<div class="container-fluid p-3 hero-sec">
+    <div class="row text-center">
+        <div class="col-lg-6 col-md-9 col-12 mx-auto">
+            <div class="container px-5 py-4 text-center layout">
+
+                <h1>Welcome</h1>
+                <p class="lead">Sign in to continue to Musically</p>
+
+                <!--form-->
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row form-group">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" placeholder="your username" name="username"
+                            id="">
+                    </div>
+
+                    <div class="row form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" placeholder="your password" name="password" id="">
+                    </div>
+
+                    <button type="submit" class="login-btn mt-4">
+                        Sign In
+                    </button>
+                </form>
+
+                <p class="mt-5 sign-up-p">Don't have an account? <span><a href="{% url 'accounts:register' %}">Sign
+                            Up</a></span> <a href="{% url 'accounts:reset_password' %}">Forgot Password?</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title%}Paaword Reset{% endblock %}
+{% block content %}
+<div class="container-fluid p-3 hero-sec">
+    <div class="row text-center">
+        <div class="col-lg-6 col-md-9 col-12 mx-auto">
+            <div class="container px-5 py-4 text-center layout">
+
+                <h1>Welcome</h1>
+                <p class="lead">Reset your password</p>
+
+                <!--form-->
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" placeholder="Enter a new password" name="password1"
+                            id="">
+                    </div>
+
+                    <div class="row form-group">
+                        <label for="password" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" placeholder="Confirm your password" name="password2"
+                            id="">
+                    </div>
+
+                    <button type="submit" class="login-btn mt-4">
+                        Reset Password
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

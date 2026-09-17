@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %} Home {%endblock%}
+{% block content%}
+<h1>Welcome {{user.username}}</h1>
+<a href="{% url 'accounts:logout'%}" class="btn btn-primary">Logout</a>
+{%endblock%}
