@@ -1,0 +1,129 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<div class="container-fluid music_genre_list">
+    <div class="container-fluid p-3 hero-sec">
+        <div class="row text-center">
+            <div class="col-lg-6 col-md-9 col-12 mx-auto">
+                <div class="container px-5 py-4 text-center layout">
+
+                    {% if track_id %}
+                    <p>Create or choose a playlist to add to</p>
+                    {% endif %}
+
+                    <h1>Create a Playlist</h1>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="row form-group">
+
+                            <label for="email" class="form-label">Playlist name:</label>
+                            <input type="text" class="form-control" placeholder="e.g relaxing tunes, happy mood..."
+                                name="playlist_name" id="">
+                        </div>
+
+                        <button type="submit" class="login-btn mt-4">
+                            Create
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-main">
+        <div class="row g-3">
+
+            {% for playlist in playlists %}
+
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <a href="{% url 'playlist:playlist_detail' playlist.pk %}" class="playlist-link">
+
+                    <div class="card track-card mb-3 mt-5 media-card playlist-card">
+
+                        <div class="row g-0 align-items-center">
+
+                            <!-- PLAYLIST ICON -->
+                            <div class="col-auto">
+
+                                <div class="playlist-icon">
+                                    <i class="bi bi-music-note-list"></i>
+                                </div>
+
+                            </div>
+
+
+                            <!-- TITLE + CREATED DATE -->
+                            <div class="col">
+
+                                <div class="card-body">
+
+                                    <h5 class="card-title">
+                                        {{ playlist.playlist_name }}
+                                    </h5>
+
+                                    <p class="card-text">
+                                        Created {{ playlist.created|date:"M d, Y" }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ARROW -->
+                            <div class="col-auto">
+
+                                <div class="playlist-arrow">
+                                    <i class="bi bi-chevron-right"></i>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+            
+            <!-- ADD TO PLAYLIST BUTTON -->
+            {% if track_id %}
+            <form method="post" action="{% url 'playlist:add_track' playlist.pk track_id %}">
+                {% csrf_token %}
+                <button class="btn btn-dark" type="submit">
+                    Add here
+                </button>
+            </form>
+            {% endif %}
+
+            {% empty %}
+            <p>No playlist created yet</p>
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+{% endblock %}

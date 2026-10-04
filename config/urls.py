@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('music/', include('music.urls')),
+    path('podcast/', include('podcasts.urls')),
+    path('playlist/', include('playlists.urls')),
 ]
 
 urlpatterns += static(

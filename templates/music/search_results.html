@@ -1,0 +1,83 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<div class="container-fluid music_genre_list">
+    
+
+    <div class="card card-main">
+        <div class="row g-3">
+
+            {% for track in tracks %}
+
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <div class="card track-card mb-3 mt-5 media-card"  data-title="{{track.title}}" data-audio="{% if track.audio_file %}{{track.audio_file.url}}{% endif %}" data-creator="{{track.artist}}" data-category="{{track.genre}}" data-image="{% if track.cover_image %}{{track.cover_image.url}}{% endif %}" data-type="{{track}}" data-track-id="{{track.id}}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+
+                    <div class="row g-0 align-items-center">
+
+                        <!-- COVER IMAGE -->
+                        <div class="col-3 col-md-4">
+
+                            {% if track.cover_image %}
+
+                            <img src="{{ track.cover_image.url }}" alt="{{ track.title }}"
+                                class="img-fluid rounded-start track-cover">
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- TITLE + ARTIST -->
+                        <div class="col-7 col-md-6">
+
+                            <div class="card-body">
+
+                                <h5 class="card-title">
+                                    {{ track.title }}
+                                </h5>
+
+                                <p class="card-text">
+                                    {{ track.artist }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PLAY BUTTON -->
+                        <div class="col-2 text-center">
+
+                            <button class="btn btn-dark media-play-btn" data-title="{{ track.title }}"
+                                data-audio="{% if track.audio_file.url %}{{ track.audio_file.url }}{% endif %}" data-track-id="{{track.pk}}">
+
+                                <i class="bi bi-play-fill"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            {% if genre %}
+            <p>No tracks available in {{ genre }}</p>
+            {% endif %}
+
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+{% endblock %}

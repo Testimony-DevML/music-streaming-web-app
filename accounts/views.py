@@ -3,6 +3,12 @@ from .forms import RegistrationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .models import Profile
+from .forms import ProfileForm
+
+
+def main(request):
+    return render(request, 'main.html')
 
 def register(request):
     if request.method == 'POST':
@@ -38,4 +44,24 @@ def logout_view(request):
 
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'music/music_list.html')
+
+@login_required
+def user_profile(request):
+    user_profile, created = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+
+        form = ProfileForm(
+            request.POST,
+            request.FILES,
+            instance=user_profile
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:user_profile')
+
+    else:
+        form = ProfileForm(instance=user_profile)
+    return render(request, 'accounts/profile.html', {'user_profile': user_profile, 'form':form})

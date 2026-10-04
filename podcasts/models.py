@@ -7,9 +7,20 @@ class Podcast(models.Model):
     description = models.TextField()
     category = models.CharField(max_length=200)
     cover_image = models.ImageField(upload_to='podcast_images/', blank=True)
-    audio_file = models.FileField(upload_to='podcast_audio/', blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.title} - {self.host}'
 
+class Episode(models.Model):
+    podcast = models.ForeignKey(Podcast, on_delete=models.CASCADE, related_name='episodes')
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    audio_file = models.FileField(upload_to='episode_audio/', blank=True)
+    episode_number = models.IntegerField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.title} - EPISODE {self.episode_number}'
+    
+    

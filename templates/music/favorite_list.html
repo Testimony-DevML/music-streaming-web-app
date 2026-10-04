@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container card">
+
+    <div class="card-title">
+        <h3>Favorite Tracks</h3>
+    </div>
+
+    <div class="card-body">
+
+        <!-- NARROW / PHONE-LIKE TRACK LIST -->
+        <div class="row justify-content-center">
+
+            <div class="col-12 col-md-9 col-lg-7">
+
+                {% for favorite in favorites %}
+
+                <!-- EACH TRACK TAKES THE FULL ROW -->
+                <div class="col-12">
+
+                    <div class="card track-card mb-3 mt-5 media-card"
+                        data-title="{{favorite.track.title}}"
+                        data-audio="{% if favorite.track.audio_file %}{{favorite.track.audio_file.url}}{% endif %}"
+                        data-creator="{{favorite.track.artist}}"
+                        data-category="{{favorite.track.genre}}"
+                        data-image="{% if favorite.track.cover_image %}{{favorite.track.cover_image.url}}{% endif %}"
+                        data-type="{{track}}"
+                        data-favorite.track-id="{{favorite.track.id}}"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasBottom"
+                        aria-controls="offcanvasBottom">
+
+                        <div class="row g-0 align-items-center">
+
+                            <!-- COVER IMAGE -->
+                            <div class="col-3 col-md-4">
+
+                                {% if favorite.track.cover_image %}
+
+                                <img src="{{ favorite.track.cover_image.url }}"
+                                    alt="{{ favorite.track.title }}"
+                                    class="img-fluid rounded-start track-cover">
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- TITLE + ARTIST -->
+                            <div class="col-7 col-md-6">
+
+                                <div class="card-body">
+
+                                    <h5 class="card-title">
+                                        {{ favorite.track.title }}
+                                    </h5>
+
+                                    <p class="card-text">
+                                        {{ favorite.track.artist }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PLAY BUTTON -->
+                            <div class="col-2 text-center">
+
+                                <button class="btn btn-dark media-play-btn"
+                                    data-title="{{ favorite.track.title }}"
+                                    data-audio="{% if favorite.track.audio_file.url %}{{ favorite.track.audio_file.url }}{% endif %}"
+                                    data-track-id="{{favorite.track.pk}}">
+
+                                    <i class="bi bi-play-fill"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <p>No favorited music yet</p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

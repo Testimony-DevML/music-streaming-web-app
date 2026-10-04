@@ -12,7 +12,7 @@ class Playlist(models.Model):
         return f'{self.user} - {self.playlist_name}'
 
 class PlaylistTrack(models.Model):
-    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name='playlist_tracks')
     track = models.ForeignKey(Track, on_delete=models.CASCADE)
     added = models.DateTimeField(auto_now_add=True)
 

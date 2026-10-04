@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid user-profile-page">
+
+    <div class="container mt-5">
+
+        <!-- =========================
+             PROFILE HEADER
+        ========================== -->
+        <div class="profile-header">
+
+            <!-- PROFILE IMAGE -->
+            <div class="profile-image-wrapper">
+
+                {% if user_profile.profile_image %}
+
+                <img src="{{ user_profile.profile_image.url }}" alt="Profile image" class="profile-image">
+
+                {% else %}
+
+                <div class="profile-placeholder">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- USERNAME -->
+            <div class="profile-username">
+
+                <!-- ADD USERNAME LOGIC HERE -->
+
+                <h2>
+                    {{user_profile.user.username}}
+                </h2>
+
+            </div>
+
+
+            <!-- SMALL ACCOUNT LABEL -->
+            <p class="profile-label">
+                MUSICA PROFILE
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             ACCOUNT INFORMATION
+        ========================== -->
+
+        <div class="profile-info-card">
+
+            <div class="profile-section-heading">
+
+                <div>
+                    <p class="profile-section-label">
+                        ACCOUNT
+                    </p>
+
+                    <h4>
+                        Profile Information
+                    </h4>
+                </div>
+
+                <i class="bi bi-person-circle"></i>
+
+            </div>
+
+
+            <!-- =========================
+                 FULL NAME
+            ==========================  -->
+
+            <!-- <div class="profile-info-row">
+
+                <div class="profile-info-icon">
+                    <i class="bi bi-person"></i>
+                </div>
+
+                <div class="profile-info-content">
+
+                    <span class="profile-info-label">
+                        Full Name
+                    </span>
+
+                    
+                        ADD FIRST NAME + LAST NAME
+                        LOGIC HERE
+                   
+
+                    <p class="profile-info-value">
+                        First Name Last Name
+                    </p>
+
+                </div>
+
+            </div> -->
+
+
+            <!-- =========================
+                 USERNAME
+            ========================== -->
+
+            <div class="profile-info-row">
+
+                <div class="profile-info-icon">
+                    <i class="bi bi-at"></i>
+                </div>
+
+                <div class="profile-info-content">
+
+                    <span class="profile-info-label">
+                        Username
+                    </span>
+
+                    <!-- ADD USERNAME LOGIC HERE -->
+
+                    <p class="profile-info-value">
+                        {{user_profile.user.username}}
+                    </p>
+
+                    <form method="POST" enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        {{ form.profile_image }}
+
+                        <button type="submit">
+                            Change Profile Picture
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 EMAIL
+            ========================== -->
+
+            <div class="profile-info-row">
+
+                <div class="profile-info-icon">
+                    <i class="bi bi-envelope"></i>
+                </div>
+
+                <div class="profile-info-content">
+
+                    <span class="profile-info-label">
+                        Email Address
+                    </span>
+
+                    <!-- ADD EMAIL LOGIC HERE -->
+
+                    <p class="profile-info-value">
+                        {{user_profile.user.email}}
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="profile-info-row">
+                <div class="profile-info-icon">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </div>
+                <div class="profile-info-content">
+                    <a href="{% url 'music:recently_played_list' %}" class="btn btn-dark">View your recently played
+                        tracks</a>
+                </div>
+            </div>
+
+            <div class="profile-info-row">
+                <div class="profile-info-icon">
+                    <i class="bi bi-heart-fill"></i>
+                </div>
+                <div class="profile-info-content">
+                    <a href="{% url 'music:favorite_list' %}" class="btn btn-dark">View your favorite tracks</a>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             LOGOUT SECTION
+        ========================== -->
+
+        <div class="profile-logout-section">
+
+            <!--
+                ADD YOUR EXISTING DJANGO
+                LOGOUT URL / LOGIC HERE
+            -->
+
+            <a href="{% url 'accounts:logout' %}" class="btn profile-logout-btn">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

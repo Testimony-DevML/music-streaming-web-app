@@ -14,8 +14,84 @@
 <body>
     {% if user.is_authenticated%}
     {% include 'nav.html'%}
-    <div class="head">
-        <h1 class="brand">Música</h1>
+    <div class="head head1 justify-content-between justify-content-md-start px-2">
+        <a href="{% url 'music:music_list' %}"><h1 class="brand">Música</h1></a>
+        <div class="search_form d-none d-md-block">
+            <form method="get" action="{% url 'music:search' %}">
+                <div class="d-flex align-items-center">
+                    <button type="submit" class="search_icon"> <i class="bi bi-search"></i></button>
+                    <div class="form-group">
+                        <input type="search" name="q" class="form-control" placeholder=" Search songs, artists, genre">
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="end d-flex align-items-center gap-2">
+
+            <!-- MOBILE NAV -->
+            <div class="menu d-block d-md-none">
+                <button class="btn btn-small btn-dark" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><i
+                        class="bi bi-list"></i></button>
+
+                <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+                    aria-labelledby="offcanvasWithBothOptionsLabel" style=" background: #0b021b;">
+
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">
+                            <div class="user_profile">
+                                <a href="{% url 'accounts:user_profile' %}" class="nav-profile-avatar">
+
+                                    {% if request.user.user_profile.profile_image %}
+
+                                    <img src="{{ request.user.user_profile.profile_image.url }}" alt="Profile image">
+
+                                    {% else %}
+
+                                    <i class="bi bi-person-fill"></i>
+
+                                    {% endif %}
+                                </a>
+                                <h4 style="color: #ffffff;">Música</h4>
+                            </div>
+                        </h5>
+
+                        <button type="button" class="btn-close btn-close-purple" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+
+                    </div>
+
+                    <div class="offcanvas-body">
+                        <a href="{% url 'music:music_list' %}" class="nav-link mb-2">Home</a>
+                        <a href="{% url 'playlist:playlist_list' %}" class="nav-link mb-2">Playlists</a>
+                        <a href="{% url 'podcast:podcast_list' %}" class="nav-link mb-2">Podcasts</a>
+                        <a href="{% url 'music:recently_played_list' %}" class="nav-link mb-2">Recently Played</a>
+                        <a href="{% url 'music:favorite_list' %}" class="nav-link">Favorite Tracks</a>
+                    </div>
+
+                </div>
+            </div>
+            <!-- MOBILE NAV END -->
+
+            <div class="user_profile d-none d-md-block">
+                <a href="{% url 'accounts:user_profile' %}" class="nav-profile-avatar">
+
+                    {% if request.user.user_profile.profile_image %}
+
+                    <img src="{{ request.user.user_profile.profile_image.url }}" alt="Profile image">
+
+                    {% else %}
+
+                    <i class="bi bi-person-fill"></i>
+
+                    {% endif %}
+                </a>
+            </div>
+
+            <div class="view_recently_played d-none d-md-block"><a href="{% url 'music:recently_played_list' %}"><i
+                        class="bi bi-arrow-counterclockwise"></i></a></div>
+
+        </div>
     </div>
     {% endif %}
 
@@ -43,21 +119,63 @@
         {%endblock%}
     </main>
 
+    {% include 'media_detail_panel.html' %}
+
     {% if user.is_authenticated %}
     <audio id="audio_player"></audio>
-    <div class="container-fluid px-3 px-md-4 px-lg-5 py-3 global-audio d-flex justify-content-between align-items-center">
+    <div
+        class="container-fluid px-3 px-md-4 px-lg-5 py-3 global-audio d-flex justify-content-between align-items-center">
         <p id="info">Nothing is playing</p>
         <div class="d-flex gap-2 align-items-center">
             <button id="play-btn" class="btn btn-dark"><i class="bi bi-play-fill"></i></button>
             <span id="current_time">0:00</span><input type="range" min="0" max="100" value="0" id="progress_bar"><span
                 id="duration">0:00</span>
         </div>
-        <div class="d-flex gap-2 align-items-center"><i class="bi bi-volume-up-fill"></i><input type="range" min="0" max="1" step="0.01" id="volume_control"></div>
+        <div class="d-flex gap-2 align-items-center"><i class="bi bi-volume-up-fill"></i><input type="range" min="0"
+                max="1" step="0.01" id="volume_control"></div>
     </div>
     {% endif %}
 
 
     <script>
+
+        function getCookies(name) {
+            let cookieValue = null
+
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';')
+
+                for (let cookie of cookies) {
+                    cookie = cookie.trim()
+
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+                        break
+                    }
+                }
+            }
+
+            return cookieValue
+        }
+        const csrftoken = getCookies('csrftoken')
+
+        function updateRecentlyPlayed(track_id) {
+            fetch(`/music/recently_played/${track_id}/`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                    }
+                }
+            )
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.log('Error recording recently played: ', error))
+        }
+
+
+
+
         const audio_player = document.getElementById('audio_player');
         const play_btn = document.getElementById('play-btn');
 
@@ -69,24 +187,29 @@
 
         const info = document.getElementById('info')
 
+
+
+        audio_player.addEventListener('play', function () {
+            if (current_track_id) {
+                updateRecentlyPlayed(current_track_id);
+            }
+        });
+
+
         function updatePlayButton() {
-            track_play_buttons.forEach(function (button) {
-                button.innerHTML = '<i class="bi bi-play-fill"></i>';
+            media_play_buttons.forEach(function (button) {
+                if (button.dataset.audio === current_audio_url && !audio_player.paused) {
+                    button.innerHTML = '<i class="bi bi-pause-fill"></i>'
+                } else {
+                    button.innerHTML = '<i class="bi bi-play-fill"></i>'
+                }
             });
 
             if (audio_player.paused) {
                 play_btn.innerHTML = '<i class="bi bi-play-fill"></i>'
 
-                if (current_track_button) {
-                    current_track_button.innerHTML = '<i class="bi bi-play-fill"></i>'
-                }
-
             } else {
                 play_btn.innerHTML = '<i class="bi bi-pause-fill"></i>'
-
-                if (current_track_button) {
-                    current_track_button.innerHTML = '<i class="bi bi-pause-fill"></i>'
-                }
             }
         }
 
@@ -129,20 +252,82 @@
             audio_player.volume = volume_control.value
         })
 
+
+        function savePosition() {
+            if (!current_track_id) {
+                return
+            }
+
+            const position = audio_player.currentTime
+
+            fetch(`/music/saved_position/${current_track_id}/`,
+                {
+                    method: 'POST',
+                    headers: { 'X-CSRFToken': csrftoken, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        position: position
+                    })
+                }
+
+
+            )
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.log('Error saving position: ', error))
+        }
+
+        audio_player.addEventListener('pause', function () {
+            if (current_track_id) {
+                savePosition()
+            }
+        })
+
+        function getSavedPosition(track_id) {
+            return fetch(`/music/resume_position/${track_id}/`)
+                .then(response => response.json())
+                .then(data => data.position);
+        }
+
+
         let current_audio_url = null;
-        function loadTrack(audio_url, title) {
+        let current_track_id = null;
+        function loadTrack(audio_url, title, track_id) {
+            if (current_track_id) {
+                savePosition()
+            }
+
             if (!audio_url) {
                 info.textContent = 'Track unavailable'
                 return
             }
             current_audio_url = audio_url
             audio_player.src = audio_url
+            current_track_id = track_id
             audio_player.load()
             info.textContent = title
+
 
             audio_player.play()
             updatePlayButton()
         }
+
+
+        const media_play_buttons = document.querySelectorAll('.media-play-btn')
+        let current_track_button = null;
+
+        media_play_buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                const audio_file = button.dataset.audio
+                const title = button.dataset.title
+                const track_id = button.dataset.trackId
+
+                if (current_audio_url === audio_file) {
+                    togglePlayBack()
+                } else {
+                    loadTrack(audio_file, title, track_id)
+                }
+            })
+        })
 
         audio_player.addEventListener('error', function () {
             info.textContent = 'Audio unavailable'
@@ -161,23 +346,75 @@
             audio_player.currentTime = 0
         })
 
-        const track_play_buttons = document.querySelectorAll('.track-play-btn')
-        let current_track_button = null;
 
-        track_play_buttons.forEach(function (button) {
-            button.addEventListener('click', function () {
-                const audio_file = button.dataset.audio
-                const title = button.dataset.title
 
-                current_track_button = button
 
-                if (current_audio_url === audio_file) {
-                    togglePlayBack()
-                } else {
-                    loadTrack(audio_file, title)
+
+
+        const media_card = document.querySelectorAll('.media-card')
+
+        const media_img = document.querySelector('.media-img')
+        const media_title = document.querySelector('.media-title')
+        const media_text = document.querySelector('.media-text')
+        const media_detail_btn = document.getElementById('media-detail-btn')
+
+        const add_to_playlist_btn = document.getElementById('add_to_playlist_btn')
+
+
+
+        media_card.forEach(function (media_card) {
+            media_card.addEventListener('click', function () {
+                title = media_card.dataset.title
+                audio_url = media_card.dataset.audio
+                creator = media_card.dataset.creator
+                description = media_card.dataset.description
+                image = media_card.dataset.image
+                type = media_card.dataset.type
+                category = media_card.dataset.category
+                track_id = media_card.dataset.trackId
+                fav_icon.dataset.trackId = track_id
+
+                media_img.src = image
+                media_title.textContent = title
+                media_text.textContent = description
+
+                media_detail_btn.dataset.title = title
+                media_detail_btn.dataset.audio = audio_url
+
+                if (track_id) {
+                    add_to_playlist_btn.href = `/playlist/playlist_list/?track=${track_id}`
                 }
             })
         })
+
+        const fav_icon = document.getElementById('favorite_icon')
+        function favoriteToggle() {
+            fav_icon.addEventListener('click', function () {
+
+                const track_id = fav_icon.dataset.trackId;
+
+                fetch(`/music/favorite/${track_id}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+
+                        if (data.favorited) {
+                            fav_icon.innerHTML = '<i class="bi bi-heart-fill"></i>';
+                        } else {
+                            fav_icon.innerHTML = '<i class="bi bi-heart"></i>';
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error('Error toggling favorite:', error);
+                    });
+            });
+        }
+        favoriteToggle()
 
 
     </script>

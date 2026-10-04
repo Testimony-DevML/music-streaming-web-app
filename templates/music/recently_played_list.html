@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container card">
+
+    <div class="card-title">
+        <h3>Recently Played</h3>
+    </div>
+
+    <div class="card-body">
+
+        <!-- NARROW / PHONE-LIKE TRACK LIST -->
+        <div class="row justify-content-center">
+
+            <div class="col-12 col-md-9 col-lg-7">
+
+                {% for recent in recently_played %}
+
+                <!-- EACH TRACK TAKES THE FULL ROW -->
+                <div class="col-12">
+
+                    <div class="card track-card mb-3 mt-5 media-card"
+                        data-title="{{recent.track.title}}"
+                        data-audio="{% if recent.track.audio_file %}{{recent.track.audio_file.url}}{% endif %}"
+                        data-creator="{{recent.track.artist}}"
+                        data-category="{{recent.track.genre}}"
+                        data-image="{% if recent.track.cover_image %}{{recent.track.cover_image.url}}{% endif %}"
+                        data-type="{{track}}"
+                        data-recent.track-id="{{recent.track.id}}"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasBottom"
+                        aria-controls="offcanvasBottom">
+
+                        <div class="row g-0 align-items-center">
+
+                            <!-- COVER IMAGE -->
+                            <div class="col-3 col-md-4">
+
+                                {% if recent.track.cover_image %}
+
+                                <img src="{{ recent.track.cover_image.url }}"
+                                    alt="{{ recent.track.title }}"
+                                    class="img-fluid rounded-start track-cover">
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- TITLE + ARTIST -->
+                            <div class="col-7 col-md-6">
+
+                                <div class="card-body">
+
+                                    <h5 class="card-title">
+                                        {{ recent.track.title }}
+                                    </h5>
+
+                                    <p class="card-text">
+                                        {{ recent.track.artist }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PLAY BUTTON -->
+                            <div class="col-2 text-center">
+
+                                <button class="btn btn-dark media-play-btn"
+                                    data-title="{{ recent.track.title }}"
+                                    data-audio="{% if recent.track.audio_file.url %}{{ recent.track.audio_file.url }}{% endif %}"
+                                    data-track-id="{{recent.track.pk}}">
+
+                                    <i class="bi bi-play-fill"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <p>No recently played music</p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

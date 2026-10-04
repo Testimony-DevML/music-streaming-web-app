@@ -1,0 +1,75 @@
+<div class="offcanvas offcanvas-bottom media-offcanvas"
+    tabindex="-1"
+    id="offcanvasBottom"
+    aria-labelledby="offcanvasBottomLabel">
+
+    <div class="offcanvas-header media-offcanvas-header">
+
+        <h5 class="offcanvas-title" id="offcanvasBottomLabel">
+            Now Playing
+        </h5>
+
+        <button type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close">
+        </button>
+
+    </div>
+
+
+    <div class="offcanvas-body">
+
+        <div class="media-detail-wrapper">
+
+            <div class="card media-detail-card" data-title="">
+
+                <img class="card-img-top media-img"
+                    src=""
+                    alt="Card image cap">
+
+
+                <div class="card-body text-center">
+
+                    <h5 class="card-title media-title"></h5>
+
+                    <p class="card-text media-text"></p>
+
+
+                    <div class="media-detail-actions">
+
+                        <button class="btn btn-dark media-play-btn media-detail-play"
+                            data-title=""
+                            data-audio="{% if track.audio_file.url %}{% endif %}"
+                            id="media-detail-btn">
+
+                            <i class="bi bi-play-fill"></i>
+
+                        </button>
+
+
+                        <form method="get">
+                            {% csrf_token %}
+
+                            <a href="#"
+                                class="btn btn-primary"
+                                id="add_to_playlist_btn">
+
+                                Add to playlist
+
+                            </a>
+                        </form>
+
+                        <button class="favorite_icon" id="favorite_icon" data-track-id=""><i class="bi bi-heart"></i></button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

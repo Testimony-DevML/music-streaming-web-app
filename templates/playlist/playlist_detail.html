@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid music_genre_list playlist-detail-page">
+
+    <!-- PLAYLIST HEADER -->
+    <div class="container">
+
+        <div class="card playlist-detail-header">
+
+            <div class="card-body text-center">
+
+                <div class="playlist-detail-icon">
+                    <i class="bi bi-music-note-list"></i>
+                </div>
+
+                <p class="playlist-label">PLAYLIST</p>
+
+                <h5 class="card-title">
+                    {{ playlist.playlist_name }}
+                </h5>
+
+                <p class="card-text">
+                    Created {{ playlist.created|date:"M d, Y" }}
+                </p>
+
+                <a href="{% url 'playlist:playlist_list' %}"
+                   class="btn playlist-back-btn">
+
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Playlists
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PLAYLIST TRACKS -->
+    <div class="card card-main playlist-tracks-section">
+
+        <div class="playlist-tracks-heading">
+            <h4>Tracks</h4>
+        </div>
+
+        <div class="row g-3">
+
+            {% for playlist_track in playlist.playlist_tracks.all %}
+
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <!-- TRACK CARD + DELETE BUTTON WRAPPER -->
+                <div class="playlist-track-wrapper">
+
+
+                    <!-- TRACK CARD -->
+                    <div class="card track-card mb-3 mt-5 media-card playlist-track-card"
+                        data-title="{{playlist_track.track.title}}"
+                        data-audio="{% if playlist_track.track.audio_file %}{{playlist_track.track.audio_file.url}}{% endif %}"
+                        data-creator="{{playlist_track.track.artist}}"
+                        data-category="{{playlist_track.track.genre}}"
+                        data-image="{% if playlist_track.track.cover_image %}{{playlist_track.track.cover_image.url}}{% endif %}"
+                        data-type="{{track}}"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasBottom"
+                        aria-controls="offcanvasBottom">
+
+                        <div class="row g-0 align-items-center">
+
+                            <!-- COVER IMAGE -->
+                            <div class="col-3 col-md-4">
+
+                                {% if playlist_track.track.cover_image %}
+
+                                <img src="{{ playlist_track.track.cover_image.url }}"
+                                    alt="{{ playlist_track.track.title }}"
+                                    class="img-fluid rounded-start track-cover">
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- TITLE + ARTIST -->
+                            <div class="col-7 col-md-6">
+
+                                <div class="card-body">
+
+                                    <h5 class="card-title">
+                                        {{ playlist_track.track.title }}
+                                    </h5>
+
+                                    <p class="card-text">
+                                        {{ playlist_track.track.artist }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PLAY BUTTON -->
+                            <div class="col-2 text-center playlist-track-actions">
+
+                                <button class="btn btn-dark media-play-btn"
+                                    data-title="{{ playlist_track.track.title }}"
+                                    data-audio="{% if playlist_track.track.audio_file %}{{ playlist_track.track.audio_file.url }}{% endif %}">
+
+                                    <i class="bi bi-play-fill"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DELETE BUTTON - OUTSIDE MEDIA CARD -->
+                    <form method="post"
+                        class="playlist-delete-form"
+                        action="{% url 'playlist:delete_track' playlist_track.pk %}">
+
+                        {% csrf_token %}
+
+                        <button class="btn playlist-delete-btn"
+                            type="submit"
+                            title="Remove from playlist">
+
+                            <i class="bi bi-trash3"></i>
+
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="playlist-empty">
+
+                <i class="bi bi-music-note-beamed"></i>
+
+                <h5>No tracks yet</h5>
+
+                <p>
+                    Add some music to this playlist to see it here.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

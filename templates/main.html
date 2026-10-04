@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="welcome-page">
+
+    <!-- BACKGROUND OVERLAY -->
+    <div class="welcome-overlay"></div>
+
+    <!-- SUBTLE PURPLE GLOW -->
+    <div class="welcome-glow"></div>
+
+
+    <!-- MAIN CONTENT -->
+    <div class="container welcome-container">
+
+        <div class="welcome-content">
+
+            <!-- APP NAME -->
+            <p class="welcome-brand">
+                MUSICA
+            </p>
+
+
+            <!-- MAIN HEADING -->
+            <h1 class="welcome-title">
+                Music for every
+                <span>moment.</span>
+            </h1>
+
+
+            <!-- DESCRIPTION -->
+            <p class="welcome-description">
+                Discover music you love, explore podcasts,
+                create your own playlists, and keep your
+                favourite sounds close.
+            </p>
+
+
+            <!-- AUTH BUTTONS -->
+            <div class="welcome-actions">
+
+                <!-- ADD YOUR LOGIN URL -->
+                <a href="{% url 'accounts:login' %}"
+                   class="btn welcome-login-btn">
+
+                    Log in
+
+                </a>
+
+
+                <!-- ADD YOUR REGISTER URL -->
+                <a href="{% url 'accounts:register' %}"
+                   class="btn welcome-register-btn">
+
+                    Create account
+
+                </a>
+
+            </div>
+
+
+            <!-- SMALL BOTTOM TEXT -->
+            <p class="welcome-note">
+                Your music. Your playlists. Your space.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

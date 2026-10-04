@@ -1,0 +1,90 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<div class="container-fluid music_genre_list">
+    <div class="filter-scroll">
+        <div class="container d-flex justify-content-center gap-3 category_links filter-list">
+            <a href="?genre=All" class="btn btn-dark {% if genre == 'All' %}active_category{% endif %} ">All</a>
+            <a href="?genre=True Crime"
+                class="btn btn-dark {% if genre == 'True Crime' %}active_category{% endif %} ">True
+                Crime</a>
+            <a href="?genre=Comedy" class="btn btn-dark {% if genre == 'Comedy' %}active_category{% endif %}">Comedy</a>
+            <a href="?genre=News and Politics"
+                class="btn btn-dark {% if genre == 'News and Politics' %}active_category{% endif %}">News and
+                Politics</a>
+            <a href="?genre=Society and Culture"
+                class="btn btn-dark {% if genre == 'Society and Culture' %}active_category{% endif %}">Society and
+                Culture</a>
+            <a href="?genre=Health and Fitness"
+                class="btn btn-dark {% if genre == 'Health and Fitness' %}active_category{% endif %}">Health and
+                Fitness</a>
+            <a href="?genre=Education"
+                class="btn btn-dark {% if genre == 'Education' %}active_category{% endif %}">Education</a>
+        </div>
+    </div>
+
+    <div class="card card-main">
+        <div class="row g-3">
+
+            {% for podcast in podcasts %}
+
+            <div class="col-12 col-md-6 col-lg-4">
+
+
+                <a href="{% url 'podcast:podcast_detail' podcast.pk %}">
+                    <div class="card track-card mb-3 mt-5 media-card">
+
+                        <div class="row g-0 align-items-center">
+
+                            <!-- COVER IMAGE -->
+                            <div class="col-3 col-md-4">
+
+                                {% if podcast.cover_image %}
+
+                                <img src="{{ podcast.cover_image.url }}" alt="{{ podcast.title }}"
+                                    class="img-fluid rounded-start track-cover">
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- TITLE + ARTIST -->
+                            <div class="col-7 col-md-6">
+
+                                <div class="card-body">
+
+                                    <h5 class="card-title">
+                                        {{ podcast.title }}
+                                    </h5>
+
+                                    <p class="card-text">
+                                        {{ podcast.host }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </a>
+
+
+            </div>
+
+            {% empty %}
+            <p>No {{podcast.category}} podcast available yet</p>
+
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+{% endblock %}

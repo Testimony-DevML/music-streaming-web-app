@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid music_genre_list">
+    
+
+    <div class="container d-flex justify-content-center">
+
+        <div class="card podcast-detail-card">
+
+            <div class="podcast-detail-image-wrapper">
+
+                <img src="{% if podcast.cover_image %}{{ podcast.cover_image.url }}{% endif %}"
+                    class="card-img-top podcast-detail-image"
+                    alt="{{ podcast.title }}">
+
+            </div>
+
+            <div class="card-body text-center podcast-detail-body">
+
+                <p class="podcast-detail-label">
+                    PODCAST
+                </p>
+
+                <h5 class="card-title podcast-detail-title">
+                    {{ podcast.title }}
+                </h5>
+
+                <p class="card-text podcast-detail-description">
+                    {{ podcast.description }}
+                </p>
+
+                <div class="podcast-detail-host">
+                    <i class="bi bi-mic-fill"></i>
+
+                    <span>
+                        {{ podcast.host }}
+                    </span>
+                </div>
+
+                <a href="{% url 'podcast:podcast_list' %}"
+                   class="btn podcast-back-btn">
+
+                    <i class="bi bi-arrow-left"></i>
+
+                    Back to Podcasts
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="card card-main">
+        <div class="row g-3">
+            {% for episode in podcast.episodes.all %}
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <div class="card track-card mb-3 mt-5 media-card">
+
+                    <div class="row g-0 align-items-center">
+
+                        <!-- TITLE -->
+                        <div class="col-7 col-md-6">
+
+                            <div class="card-body">
+
+                                <h5 class="card-title">
+                                    {{ episode.title }}
+                                </h5>
+
+                                <div class="card-text">
+                                    <p>Episode - {{episode.episode_number}}</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- PLAY BUTTON -->
+                        <div class="col-2 text-center">
+
+                            <button class="btn btn-dark media-play-btn" data-title="{{ episode.title }}"
+                                data-audio="{% if episode.audio_file.url %}{{ episode.audio_file.url }}{% endif %}">
+
+                                <i class="bi bi-play-fill"></i>
+
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            {% empty %}
+            <p>No {{podcast.category}} podcast available yet</p>
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

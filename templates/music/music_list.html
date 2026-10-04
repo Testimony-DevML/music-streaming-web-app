@@ -1,12 +1,31 @@
 {% extends 'base.html'%}
 
 {% block content %}
+
+<div class="head1">
+    <div class="search_form d-block d-md-none form-search">
+        <form method="get" action="{% url 'music:search' %}">
+            <div class="d-flex align-items-center">
+                <button type="submit" class="search_icon"> <i class="bi bi-search"></i></button>
+                <div class="form-group">
+                    <input type="search" name="q" class="form-control" placeholder=" Search songs, artists, genre">
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="container-fluid music_genre_list">
-    <div class="container d-flex justify-content-center gap-3 category_links">
-        <a href="?genre=All" class="btn btn-dark {% if genre == 'All' %}active_category{% endif %} ">All</a>
-        <a href="?genre=Pop" class="btn btn-dark {% if genre == 'Pop' %}active_category{% endif %}">Pop</a>
-        <a href="?genre=Rock" class="btn btn-dark {% if genre == 'Rock' %}active_category{% endif %}">Rock</a>
-        <a href="?genre=Blues" class="btn btn-dark {% if genre == 'Blues' %}active_category{% endif %}">Blues</a>
+    <div class="filter-scroll">
+        <div class="container d-flex justify-content-center gap-3 category_links filter-list">
+            <a href="?genre=All" class="btn btn-dark {% if genre == 'All' %}active_category{% endif %} ">All</a>
+            <a href="?genre=Pop" class="btn btn-dark {% if genre == 'Pop' %}active_category{% endif %}">Pop</a>
+            <a href="?genre=Rock" class="btn btn-dark {% if genre == 'Rock' %}active_category{% endif %}">Rock</a>
+            <a href="?genre=Blues" class="btn btn-dark {% if genre == 'Blues' %}active_category{% endif %}">Blues</a>
+            <a href="?genre=Gospel" class="btn btn-dark {% if genre == 'Gospel' %}active_category{% endif %}">Gospel</a>
+            <a href="?genre=R&B" class="btn btn-dark {% if genre == 'R&B' %}active_category{% endif %}">R&B</a>
+        </div>
     </div>
 
     <div class="card card-main">
@@ -16,7 +35,12 @@
 
             <div class="col-12 col-md-6 col-lg-4">
 
-                <div class="card track-card mb-3 mt-5" style="background-color: aliceblue;">
+                <div class="card track-card mb-3 mt-5 media-card" data-title="{{track.title}}"
+                    data-audio="{% if track.audio_file %}{{track.audio_file.url}}{% endif %}"
+                    data-creator="{{track.artist}}" data-category="{{track.genre}}"
+                    data-image="{% if track.cover_image %}{{track.cover_image.url}}{% endif %}" data-type="{{track}}"
+                    data-track-id="{{track.id}}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
+                    aria-controls="offcanvasBottom">
 
                     <div class="row g-0 align-items-center">
 
@@ -54,8 +78,9 @@
                         <!-- PLAY BUTTON -->
                         <div class="col-2 text-center">
 
-                            <button class="btn btn-dark track-play-btn" data-title="{{ track.title }}"
-                                data-audio="{% if track.audio_file.url %}{{ track.audio_file.url }}{% endif %}">
+                            <button class="btn btn-dark media-play-btn" data-title="{{ track.title }}"
+                                data-audio="{% if track.audio_file.url %}{{ track.audio_file.url }}{% endif %}"
+                                data-track-id="{{track.pk}}">
 
                                 <i class="bi bi-play-fill"></i>
 
