@@ -39,8 +39,8 @@
                     data-audio="{% if track.audio_file %}{{track.audio_file.url}}{% endif %}"
                     data-creator="{{track.artist}}" data-category="{{track.genre}}"
                     data-image="{% if track.cover_image %}{{track.cover_image.url}}{% endif %}" data-type="{{track}}"
-                    data-track-id="{{track.id}}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
-                    aria-controls="offcanvasBottom">
+                    data-track-id="{{track.id}}" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasBottom{{track.pk}}" aria-controls="offcanvasBottom{{track.pk}}">
 
                     <div class="row g-0 align-items-center">
 
@@ -85,6 +85,81 @@
                                 <i class="bi bi-play-fill"></i>
 
                             </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="offcanvas offcanvas-bottom media-offcanvas" tabindex="-1" id="offcanvasBottom{{track.pk}}"
+                aria-labelledby="offcanvasBottomLabel{{track.pk}}">
+
+                <div class="offcanvas-header media-offcanvas-header">
+
+                    <h5 class="offcanvas-title" id="offcanvasBottomLabel{{track.pk}}">
+                        Now Playing
+                    </h5>
+
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                        aria-label="Close">
+                    </button>
+
+                </div>
+
+
+                <div class="offcanvas-body">
+
+                    <div class="media-detail-wrapper">
+
+                        <div class="card media-detail-card" data-title="">
+
+                            <img class="card-img-top media-img"
+                                src="{% if track.cover_image %}{{track.cover_image.url}} {% endif %}"
+                                alt="Card image cap">
+
+
+                            <div class="card-body text-center">
+
+                                <h5 class="card-title media-title">{{track.title}}</h5>
+
+                                <p class="card-text media-text"></p>
+
+
+                                <div class="media-detail-actions">
+
+                                    <button class="btn btn-dark media-play-btn media-detail-play"
+                                        data-title="{{ track.title }}"
+                                        data-audio="{% if track.audio_file.url %}{{ track.audio_file.url }}{% endif %}"
+                                        data-track-id="{{track.pk}}">
+
+                                        <i class="bi bi-play-fill"></i>
+
+                                    </button>
+
+
+                                    <a href="{% url 'playlist:playlist_list' %}?track={{ track.pk }}"
+                                        class="btn btn-primary" id="add_to_playlist_btn">
+                                        Add to playlist
+                                    </a>
+
+                                    <button class="favorite_icon" data-track-id="{{track.pk}}">
+                                        {% if track.pk in fav_track_ids %}
+
+                                        <i class="bi bi-heart-fill"></i>
+
+                                        {% else %}
+
+                                        <i class="bi bi-heart"></i>
+
+                                        {% endif %}
+                                    </button>
+
+                                </div>
+
+                            </div>
 
                         </div>
 

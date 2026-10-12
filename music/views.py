@@ -16,7 +16,9 @@ def music_list(request):
     if genre != 'All':
         tracks = tracks.filter(genre__iexact=genre)
 
-    return render(request, 'music/music_list.html', {'tracks': tracks, 'genre':genre})
+    fav_track_ids = Favorite.objects.filter(user=request.user).values_list('track_id', flat=True)
+
+    return render(request, 'music/music_list.html', {'tracks': tracks, 'genre':genre, 'fav_track_ids':fav_track_ids})
 
 @login_required
 @require_POST

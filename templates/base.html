@@ -15,7 +15,9 @@
     {% if user.is_authenticated%}
     {% include 'nav.html'%}
     <div class="head head1 justify-content-between justify-content-md-start px-2">
-        <a href="{% url 'music:music_list' %}"><h1 class="brand">Música</h1></a>
+        <a href="{% url 'music:music_list' %}">
+            <h1 class="brand">Música</h1>
+        </a>
         <div class="search_form d-none d-md-block">
             <form method="get" action="{% url 'music:search' %}">
                 <div class="d-flex align-items-center">
@@ -57,7 +59,8 @@
                             </div>
                         </h5>
 
-                        <button type="button" class="btn-close btn-close-purple" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        <button type="button" class="btn-close btn-close-purple" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
 
                     </div>
 
@@ -356,7 +359,7 @@
         const media_img = document.querySelector('.media-img')
         const media_title = document.querySelector('.media-title')
         const media_text = document.querySelector('.media-text')
-        const media_detail_btn = document.getElementById('media-detail-btn')
+        // const media_detail_btn = document.getElementById('media-detail-btn')
 
         const add_to_playlist_btn = document.getElementById('add_to_playlist_btn')
 
@@ -372,23 +375,26 @@
                 type = media_card.dataset.type
                 category = media_card.dataset.category
                 track_id = media_card.dataset.trackId
-                fav_icon.dataset.trackId = track_id
 
-                media_img.src = image
-                media_title.textContent = title
-                media_text.textContent = description
-
-                media_detail_btn.dataset.title = title
-                media_detail_btn.dataset.audio = audio_url
-
-                if (track_id) {
-                    add_to_playlist_btn.href = `/playlist/playlist_list/?track=${track_id}`
-                }
+                /* fav_icon.dataset.trackId = track_id
+ 
+                 media_img.src = image
+                 media_title.textContent = title
+                 media_text.textContent = description
+ 
+                 media_detail_btn.dataset.title = title
+                 media_detail_btn.dataset.audio = audio_url
+ 
+                 if (track_id) {
+                     add_to_playlist_btn.href = `/playlist/playlist_list/?track=${track_id}`
+                 } */
             })
         })
 
-        const fav_icon = document.getElementById('favorite_icon')
-        function favoriteToggle() {
+        const fav_icons = document.querySelectorAll('.favorite_icon');
+
+        fav_icons.forEach(function (fav_icon) {
+
             fav_icon.addEventListener('click', function () {
 
                 const track_id = fav_icon.dataset.trackId;
@@ -399,21 +405,31 @@
                         'X-CSRFToken': csrftoken
                     }
                 })
+
                     .then(response => response.json())
+
                     .then(data => {
 
                         if (data.favorited) {
-                            fav_icon.innerHTML = '<i class="bi bi-heart-fill"></i>';
+                            fav_icon.innerHTML =
+                                '<i class="bi bi-heart-fill"></i>';
                         } else {
-                            fav_icon.innerHTML = '<i class="bi bi-heart"></i>';
+                            fav_icon.innerHTML =
+                                '<i class="bi bi-heart"></i>';
                         }
 
                     })
+
                     .catch(error => {
-                        console.error('Error toggling favorite:', error);
+                        console.error(
+                            'Error toggling favorite:',
+                            error
+                        );
                     });
+
             });
-        }
+
+        });
         favoriteToggle()
 
 
